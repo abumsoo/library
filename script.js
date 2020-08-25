@@ -1,7 +1,6 @@
-function Book(title, author, pages) {
+function Book(title, author) {
   this.title = title;
   this.author = author;
-  this.pages = pages;
   this.readState = false;
 }
 
@@ -12,9 +11,10 @@ Book.prototype.toggleRead = function() {
 function addBookToLibrary() {
   let title = prompt("Title");
   let author = prompt("Author");
-  let pages = prompt("Number of pages");
 
-  myLibrary.push(new Book(title, author, pages));
+  let book = new Book(title, author);
+  myLibrary.push(book);
+
   populateStorage();
 
   renderCycle();
@@ -53,6 +53,8 @@ function buildCard(book, index) {
   const btnRead = buildButton("read", index);
   if (myLibrary[index].readState === true) {
     btnRead.style.color = 'green';
+  } else {
+    btnRead.style.color = 'black';
   }
   btnContainer.appendChild(btnRead);
 
@@ -73,6 +75,7 @@ function buildButton(type, index) {
 }
 
 function deleteBook(e) {
+  e.stopPropagation();
   // delete book from library array
   let index = e.target.getAttribute('data-index');
   myLibrary.splice(index, 1);
@@ -82,6 +85,7 @@ function deleteBook(e) {
 }
 
 function setRead(e) {
+  e.stopPropagation();
   let index = e.target.getAttribute('data-index');
   myLibrary[index].toggleRead();
   populateStorage();
@@ -107,12 +111,21 @@ function startDeleteButtonListeners() {
   delBtns.forEach(button => button.addEventListener('click', deleteBook));
 }
 
+function startCardListeners() {
+  const cards = document.querySelectorAll(".card");
+  cards.forEach(card => card.addEventListener('click', (e) => {
+    setPreview(e);
+    e.target.classList.add('card-clicked');
+  }));
+}
+
 function renderCycle() {
   render();
   // if library exists
   if (myLibrary && myLibrary.length) {
     startDeleteButtonListeners();
     startReadButtonListeners();
+    startCardListeners();
   }
 }
 
@@ -151,12 +164,55 @@ function populateLibrary() {
     let author = jsonObj[i].author;
     let pages = jsonObj[i].pages;
     let read = jsonObj[i].read;
-    myLibrary.push(new Book(title, author, pages, read));
+    let book = new Book(title, author);
+    book.read = read;
+    book.pages = pages;
+    myLibrary.push(book);
   }
 }
 
 function populateStorage() {
   localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+}
+
+function setPreview(e) {
+  const preview = document.querySelector('.preview');
+
+  // get info from clicked card
+  let title = myLibrary[e.target.getAttribute('data-index')].title;
+  let author = myLibrary[e.target.getAttribute('data-index')].author;
+
+  let coverURL = 'http://covers.openlibrary.org/b'
+  getOpenLibraryInfo(author, title)
+    .then(info => {
+      let imgURL = `${coverURL}/id/${info.cover_i}-M.jpg`;
+      preview.style.backgroundImage = `url('${imgURL}')`;
+    })
+    .then(() => preview.style.boxShadow = '0 0 8px 0 rgba(0, 0, 0, 0.5)');
+}
+
+
+function getOpenLibraryInfo(author, title) {
+  // build search query
+  author = author.toLowerCase();
+  let base = 'http://openlibrary.org/search.json?title='
+  let query = title.toLowerCase().replace(/\s/g, '+');
+  let results = fetch(`${base}${query}`)
+    .then(response => response.json())
+    .then(data => {
+      // return the id of the correct book
+      for (doc in data.docs) {
+        // check if item has the correct author
+        if (!('author_name' in data.docs[doc])) {
+          continue;
+        }
+        let possibleNames = data.docs[doc].author_name.map(a => a.toLowerCase());
+        if (possibleNames.find(a => a === author)) {
+          return data.docs[doc];
+        }
+      }
+    });
+  return results;
 }
 
 let myLibrary = [];
@@ -168,9 +224,9 @@ if (storageAvailable('localStorage')) {
     populateLibrary();
   }
 } else {
-  myLibrary.push(new Book("Harry Potter", "J.K. Rowling", 239));
-  myLibrary.push(new Book("Jurassic Park", "Michael Crichton", 214));
-  myLibrary.push(new Book("Kafka on the Shore", "Haruki Murakami", 214));
+  myLibrary.push(new Book("Harry Potter", "J.K. Rowling"));
+  myLibrary.push(new Book("Jurassic Park", "Michael Crichton"));
+  myLibrary.push(new Book("Kafka on the Shore", "Haruki Murakami"));
 }
 
 renderCycle();
