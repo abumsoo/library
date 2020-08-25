@@ -1,11 +1,13 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
 body {
     font-family: Noto Sans, arial;
     font-size: 16px;
 }
 
-h1 {
-    font-size: 4em;
-}
+h1 { font-size: 4em; }
+h2 { font-size: 1.3em; }
+h3 { font-size: 1em; }
 
 .title {
     grid-area: 1 / 2 / 2 / 3;
@@ -19,12 +21,23 @@ h1 {
     align-self: center;
 }
 
+.add-button button {
+    border: 2px solid #01befe;
+    font-size: 3em;
+}
+
+.add-button button:hover {
+    cursor: pointer;
+    background: silver;
+}
+
 .container {
     display: grid;
     grid-template-columns: 1fr 1000px 2fr;
     grid-template-rows: 100px 100px auto;
 }
 
+/* inside container */
 .content {
     display: grid;
     grid-column-start: 2;
@@ -35,26 +48,29 @@ h1 {
     grid-gap: 1em;
 }
 
+/* inside content, next to preview */
 .shelf {
     display: grid;
     grid-area: 1 / 1 / 2 / 5;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr 1fr auto;
     grid-gap: 1em;
     align-items: center;
 }
 
+/* inside content, next to shelf */
 .preview {
     grid-column-start: 5;
     grid-column-end: 7;
-    height: 486px;
+    height: 446px;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
+/* inside shelf */
 .card {
     display: grid;
-    height: 150px;
+    height: 200px;
     width: 100%;
     border: 2px solid #d0d0d0;
     text-align: center;
