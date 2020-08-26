@@ -33,30 +33,37 @@ function render() {
 }
 
 function buildCard(book, index) {
+  // group card
   const card = document.createElement("div");
   card.setAttribute("class", "card");
   card.setAttribute("data-index", `${index}`);
 
+  // group just the text into a container
+  const textContainer = document.createElement("div");
+  textContainer.setAttribute("class", "text-container");
+  card.appendChild(textContainer);
+
   const title = document.createElement("h2");
   title.innerHTML = book.title ? book.title : "";
-  card.appendChild(title);
+  textContainer.appendChild(title);
 
   const author = document.createElement("h3");
   author.innerHTML = book.author ? book.author : "";
-  card.appendChild(author);
+  textContainer.appendChild(author);
 
   const pages = document.createElement("p");
-  pages.innerHTML = book.pages ? `Pages: ${book.pages}` : "";
-  card.appendChild(pages);
+  pages.innerHTML = book.pages ? `${book.pages} pages` : "";
+  textContainer.appendChild(pages);
 
+  // group buttons into a container
   const btnContainer = document.createElement("div");
   btnContainer.setAttribute("class", "btn-container");
 
   const btnRead = buildButton("read", index);
   if (myLibrary[index].readState === true) {
-    btnRead.style.color = 'green';
+    btnRead.classList.add('read');
   } else {
-    btnRead.style.color = 'black';
+    btnRead.classList.remove('read');
   }
   btnContainer.appendChild(btnRead);
 
@@ -72,7 +79,12 @@ function buildButton(type, index) {
   const button = document.createElement("button");
   button.setAttribute("class", `btn-${type}`);
   button.setAttribute("data-index", `${index}`);
-  button.innerHTML = `${type}`;
+
+  if (type === 'delete') {
+    button.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>'
+  } else if (type === 'read') {
+    button.innerHTML = '<i class="fa fa-eye" aria-hidden="true"></i>'
+  }
   return button;
 }
 
@@ -92,9 +104,9 @@ function setRead(e) {
   myLibrary[index].toggleRead();
   populateStorage();
   if (myLibrary[index].readState) {
-    e.target.style.color = 'green';
+    e.target.classList.add('read');
   } else {
-    e.target.style.color = 'black';
+    e.target.classList.remove('read');
   }
 }
 
@@ -117,6 +129,10 @@ function startCardListeners() {
   const cards = document.querySelectorAll(".card");
   cards.forEach(card => card.addEventListener('click', (e) => {
     setPreview(e);
+    const clickedCard = document.querySelector(".card-clicked");
+    if (clickedCard) {
+      clickedCard.classList.remove('card-clicked');
+    }
     e.target.classList.add('card-clicked');
   }));
 }
@@ -186,10 +202,10 @@ function setPreview(e) {
   let coverURL = 'http://covers.openlibrary.org/b'
   getOpenLibraryInfo(author, title)
     .then(info => {
-      let imgURL = `${coverURL}/id/${info.cover_i}-M.jpg`;
+      let imgURL = `${coverURL}/id/${info.cover_i}-L.jpg`;
       preview.style.backgroundImage = `url('${imgURL}')`;
     })
-    .then(() => preview.style.boxShadow = '0 0 8px 0 rgba(0, 0, 0, 0.5)');
+    .then(() => preview.style.boxShadow = '0 0 16px 8px rgba(255, 255, 255, 0.9)');
 }
 
 
