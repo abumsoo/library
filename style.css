@@ -1,5 +1,10 @@
+* {
+    font-family: 'Bungee Inline', 'Russo One', arial;
+    font-size: 16px;
+}
+
 body {
-    font-family: Noto Sans, arial;
+    font-family: 'Bungee Inline', 'Russo One', arial;
     font-size: 16px;
     background: #0b0b0b;
     color: #50C8D2;
@@ -116,10 +121,10 @@ h3 { font-size: 1em; }
 
 .btn-container button {
     outline: none;
-    margin: 0 12px;
     border: none;
     background: none;
     font-size: 1.2em;
+    padding: 0 16px;
 }
 
 .btn-container button i {
@@ -140,4 +145,56 @@ i.fa-trash:active {
 
 .btn-container button:active {
     outline: none;
+}
+
+.form-container {
+    /* changed in js */
+    display: none;
+    position: fixed;
+    margin: auto;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 200px auto;
+}
+
+#popup-form {
+    /* changed in js */
+    display: none;
+    grid-area: 2 / 2 / auto / 3;
+    background: #50c8d2;
+    color: #144d53;
+    padding: 36px;
+    justify-self: center;
+    box-shadow: 0 0 8px 8px rgba(255, 255, 255, 0.5);
+}
+
+.form-title, .form-author, .form-pages {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 0;
+}
+
+#popup-form input[type='text'] {
+    border-radius: 0;
+    background: #f9fbfb;
+    border: 2px solid #ffcc5f;;
+    padding: 4px;
+}
+
+.form-buttons {
+    display: flex;
+    margin-top: 16px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.form-buttons input {
+    border: none;
+    margin: 8px 0;
+    padding: 8px 24px;
+    background: #ffcc5f;
+}
+
+.form-buttons input:hover {
+    box-shadow: 0 0 4px 4px #144d53;
 }

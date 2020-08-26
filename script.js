@@ -10,9 +10,9 @@ Book.prototype.toggleRead = function() {
 };
 
 function addBookToLibrary() {
-  let title = prompt("Title");
-  let author = prompt("Author");
-  let pages = prompt("Pages");
+  let title = document.getElementById("new-title").value;
+  let author = document.getElementById("new-author").value;
+  let pages = document.getElementById("new-pages").value
 
   let book = new Book(title, author, pages);
   myLibrary.push(book);
@@ -110,9 +110,13 @@ function setRead(e) {
   }
 }
 
-function startAddButtonListener() {
+function startFormListener() {
   const btnAdd = document.querySelector(".add-button");
-  btnAdd.addEventListener('click', addBookToLibrary);
+  btnAdd.addEventListener('click', openForm);
+  const cancel = document.querySelector("#popup-form #cancel");
+  cancel.addEventListener('click', closeForm);
+  const submit = document.querySelector("#popup-form #submit");
+  submit.addEventListener('click', addBookToLibrary);
 }
 
 function startReadButtonListeners() {
@@ -205,7 +209,7 @@ function setPreview(e) {
       let imgURL = `${coverURL}/id/${info.cover_i}-L.jpg`;
       preview.style.backgroundImage = `url('${imgURL}')`;
     })
-    .then(() => preview.style.boxShadow = '0 0 16px 8px rgba(255, 255, 255, 0.9)');
+    .then(() => preview.style.boxShadow = '0 0 8px 8px rgba(255, 255, 255, 0.9)');
 }
 
 
@@ -232,6 +236,17 @@ function getOpenLibraryInfo(author, title) {
   return results;
 }
 
+function openForm() {
+  document.querySelector(".form-container").style.display = "grid";
+  document.getElementById("popup-form").style.display = "grid";
+}
+
+function closeForm() {
+  document.getElementById("popup-form").style.display = "none";
+  document.querySelector(".form-container").style.display = "none";
+  document.querySelector("form#popup-form").reset();
+}
+
 let myLibrary = [];
 
 if (storageAvailable('localStorage')) {
@@ -247,4 +262,4 @@ if (storageAvailable('localStorage')) {
 }
 
 renderCycle();
-startAddButtonListener();
+startFormListener();
