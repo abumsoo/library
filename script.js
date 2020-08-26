@@ -1,7 +1,8 @@
-function Book(title, author) {
+function Book(title, author, pages, read = false) {
   this.title = title;
   this.author = author;
-  this.readState = false;
+  this.pages = pages;
+  this.readState = read;
 }
 
 Book.prototype.toggleRead = function() {
@@ -11,8 +12,9 @@ Book.prototype.toggleRead = function() {
 function addBookToLibrary() {
   let title = prompt("Title");
   let author = prompt("Author");
+  let pages = prompt("Pages");
 
-  let book = new Book(title, author);
+  let book = new Book(title, author, pages);
   myLibrary.push(book);
 
   populateStorage();
@@ -163,12 +165,11 @@ function populateLibrary() {
     let title = jsonObj[i].title;
     let author = jsonObj[i].author;
     let pages = jsonObj[i].pages;
-    let read = jsonObj[i].read;
-    let book = new Book(title, author);
-    book.read = read;
-    book.pages = pages;
+    let read = jsonObj[i].readState;
+    let book = new Book(title, author, pages, read);
     myLibrary.push(book);
   }
+  populateStorage();
 }
 
 function populateStorage() {

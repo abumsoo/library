@@ -79,7 +79,6 @@ h3 { font-size: 1em; }
 }
 
 .card:hover {
-    cursor: pointer;
     box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.5);
 }
 
