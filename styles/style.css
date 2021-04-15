@@ -10,9 +10,17 @@ body {
     color: #50C8D2;
 }
 
-h1 { font-size: 4em; }
-h2 { font-size: 1.3em; }
-h3 { font-size: 1em; }
+h1 {
+    font-size: 4em;
+}
+
+h2 {
+    font-size: 1.3em;
+}
+
+h3 {
+    font-size: 1em;
+}
 
 .title {
     grid-area: 1 / 2 / 2 / 3;
@@ -104,7 +112,9 @@ h3 { font-size: 1em; }
     padding: 0 8px;
 }
 
-.card h2, .card h3, .card p {
+.card h2,
+.card h3,
+.card p {
     pointer-events: none;
 }
 
@@ -117,6 +127,12 @@ h3 { font-size: 1em; }
     justify-content: center;
     background: #f9fbfb;
     height: 2em;
+}
+
+.btn-read,
+.btn-delete {
+    display: flex;
+    align-items: center;
 }
 
 .btn-container button {
@@ -168,7 +184,9 @@ i.fa-trash:active {
     box-shadow: 0 0 8px 8px rgba(255, 255, 255, 0.5);
 }
 
-.form-title, .form-author, .form-pages {
+.form-title,
+.form-author,
+.form-pages {
     display: flex;
     flex-direction: column;
     margin: 8px 0;
@@ -177,7 +195,8 @@ i.fa-trash:active {
 #popup-form input[type='text'] {
     border-radius: 0;
     background: #f9fbfb;
-    border: 2px solid #ffcc5f;;
+    border: 2px solid #ffcc5f;
+    ;
     padding: 4px;
 }
 
