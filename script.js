@@ -203,7 +203,7 @@ function setPreview(e) {
   let title = myLibrary[e.target.getAttribute('data-index')].title;
   let author = myLibrary[e.target.getAttribute('data-index')].author;
 
-  let coverURL = 'http://covers.openlibrary.org/b'
+  let coverURL = 'https://covers.openlibrary.org/b';
   getOpenLibraryInfo(author, title)
     .then(info => {
       let imgURL = `${coverURL}/id/${info.cover_i}-L.jpg`;
@@ -213,12 +213,12 @@ function setPreview(e) {
 }
 
 
-function getOpenLibraryInfo(author, title) {
+async function getOpenLibraryInfo(author, title)  {
   // build search query
   author = author.toLowerCase();
-  let base = 'http://openlibrary.org/search.json?title='
+  let base = 'https://openlibrary.org/search.json?title='
   let query = title.toLowerCase().replace(/\s/g, '+');
-  let results = fetch(`${base}${query}`)
+  let results = await fetch(`${base}${query}`)
     .then(response => response.json())
     .then(data => {
       // return the id of the correct book
